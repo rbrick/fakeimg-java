@@ -1,5 +1,7 @@
 package me.rbrickis.fakeimg.lib;
 
+import lombok.Builder;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -9,6 +11,23 @@ public class FakeImg {
     private int width, height;
     private Font font;
 
+
+    public FakeImg() {
+        this("250x250");
+    }
+
+    public FakeImg(String text) {
+        this(text, 250, 250);
+    }
+
+    public FakeImg(String text, int width, int height) {
+        this(text, width, height, "282828", "ffffff");
+    }
+
+    public FakeImg(String text, int width, int height, String bgColor, String textColor) {
+        // The font size will be a fourth of the height or the width
+        this(text, width, height, bgColor, textColor, new Font("Open Sans", Font.PLAIN, Math.min(width, height) / 4));
+    }
 
     public FakeImg(String text, int width, int height, String bgColor, String textColor, Font font) {
         this.text = text;
@@ -55,7 +74,7 @@ public class FakeImg {
         Graphics2D graphics = image.createGraphics();
 
         // Set the color
-        graphics.setColor(Color.decode(this.bgColor));
+        graphics.setColor(Color.decode("#" + this.bgColor));
         // Fill in the area
         graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
 
@@ -63,7 +82,7 @@ public class FakeImg {
         graphics.setFont(this.font);
 
         // Reset the color used for the text
-        graphics.setColor(Color.decode(this.textColor));
+        graphics.setColor(Color.decode("#" + this.textColor));
 
         // Enable Anti-Aliasing
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

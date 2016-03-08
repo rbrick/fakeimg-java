@@ -27,6 +27,17 @@ public class Application {
             routingContext.next();
         });
 
+        router.route("/image/").handler(routingContext -> {
+            render(routingContext.response(), new FakeImg());
+        });
+
+        router.route("/image/").pathRegex("/image/([0-9]{1,3})x([0-9]{1,3})/(.*)").handler(routingContext -> {
+            int width = Integer.parseInt(routingContext.request().getParam("param0"));
+            int height = Integer.parseInt(routingContext.request().getParam("param1"));
+            String text = routingContext.request().getParam("param2");
+            render(routingContext.response(), new FakeImg(text, width, height));
+        });
+
         router.route("/image/").pathRegex("/image/([0-9]{1,3})x([0-9]{1,3})/([0-9a-fA-F]{6})/([0-9a-fA-F]{6})/(.*)/(.*)").handler(routingContext -> {
             int width = Integer.parseInt(routingContext.request().getParam("param0"));
             int height = Integer.parseInt(routingContext.request().getParam("param1"));
@@ -36,20 +47,30 @@ public class Application {
             String text = routingContext.request().getParam("param5");
 
             FakeImg img = new FakeImg(text, width, height, bgColor, textColor, new Font(font, Font.PLAIN, Math.min(width, height) / 4));
-            BufferedImage image = img.renderImage();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-            try {
-                ImageIO.write(image, "png", baos);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            Buffer buffer = Buffer.buffer().appendBytes(baos.toByteArray());
-            routingContext.response().end(buffer);
+            routingContext.response().end(imageToBuffer(img.renderImage()));
         });
 
         server.requestHandler(router::accept).listen(8080);
     }
 
+    /**
+     * Transforms a {@link java.awt.image.BufferedImage} into a {@link io.vertx.core.buffer.Buffer}
+     * that can be used by Vert.x
+     *
+     * @return A buffer containing the provided {@code java.awt.image.BufferedImage image} bytes
+     */
+    private static Buffer imageToBuffer(BufferedImage image) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(image, "png", baos);
+        } catch (IOException exception) {
+            // Ignored
+        }
+        return Buffer.buffer().appendBytes(baos.toByteArray());
+    }
+
+    private static void render(HttpServerResponse response, FakeImg img) {
+        response.end(imageToBuffer(img.renderImage()));
+    }
 }
