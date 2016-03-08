@@ -43,20 +43,33 @@ public class FakeImg {
         return font;
     }
 
+    /**
+     * This takes all the given information, and renders it into an image that can be displayed.
+     *
+     * @return A buffered image of the given height and width, with the given background color, and the given text
+     *         colored with the given text color
+     */
     public BufferedImage renderImage() {
         BufferedImage image = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_ARGB);
         // Get the graphics so we can now manipulate the image
         Graphics2D graphics = image.createGraphics();
+
+        // Set the color
         graphics.setColor(Color.decode(this.bgColor));
+        // Fill in the area
         graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
 
+        // Set the font
         graphics.setFont(this.font);
+
+        // Reset the color used for the text
         graphics.setColor(Color.decode(this.textColor));
 
         // Enable Anti-Aliasing
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         FontMetrics metrics = graphics.getFontMetrics();
+
         // This centers the text in the image
         int stringWidth =  metrics.stringWidth(this.text) / 2;
         int descent = metrics.getDescent();
