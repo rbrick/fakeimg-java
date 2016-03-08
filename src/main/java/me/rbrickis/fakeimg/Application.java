@@ -38,17 +38,21 @@ public class Application {
             render(routingContext.response(), new FakeImg(text, width, height));
         });
 
-        router.route("/image/").pathRegex("/image/([0-9]{1,3})x([0-9]{1,3})/([0-9a-fA-F]{6})/([0-9a-fA-F]{6})/(.*)/(.*)").handler(routingContext -> {
+        router.route("/image/").pathRegex("/image/([0-9]{1,3})x([0-9]{1,3})/([0-9a-fA-F]{3,6})/(.*)").handler(routingContext -> {
             int width = Integer.parseInt(routingContext.request().getParam("param0"));
             int height = Integer.parseInt(routingContext.request().getParam("param1"));
-            String bgColor = "#" + routingContext.request().getParam("param2");
-            String textColor = "#" + routingContext.request().getParam("param3");
-            String font = routingContext.request().getParam("param4");
-            String text = routingContext.request().getParam("param5");
+            String bgColor = routingContext.request().getParam("param2");
+            String text = routingContext.request().getParam("param3");
+            render(routingContext.response(), new FakeImg(text, width, height, bgColor, "FFFFFF"));
+        });
 
-            FakeImg img = new FakeImg(text, width, height, bgColor, textColor, new Font(font, Font.PLAIN, Math.min(width, height) / 4));
-
-            routingContext.response().end(imageToBuffer(img.renderImage()));
+        router.route("/image/").pathRegex("/image/([0-9]{1,3})x([0-9]{1,3})/([0-9a-fA-F]{3,6})/([0-9a-fA-F]{3,6})/(.*)").handler(routingContext -> {
+            int width = Integer.parseInt(routingContext.request().getParam("param0"));
+            int height = Integer.parseInt(routingContext.request().getParam("param1"));
+            String bgColor = routingContext.request().getParam("param2");
+            String textColor = routingContext.request().getParam("param3");
+            String text = routingContext.request().getParam("param4");
+            render(routingContext.response(), new FakeImg(text, width, height, bgColor, textColor));
         });
 
         server.requestHandler(router::accept).listen(8080);

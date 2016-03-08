@@ -95,7 +95,6 @@ public class FakeImg {
         int textWidth = (image.getWidth()/2) - stringWidth;
         int textHeight = (image.getHeight()/2) + descent;
 
-        // Center the text
         graphics.drawString(this.text, textWidth, textHeight);
         return image;
     }
