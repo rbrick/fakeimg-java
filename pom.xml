@@ -6,7 +6,7 @@
 
     <groupId>me.rbrickis</groupId>
     <artifactId>fakeimg-java</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.2</version>
 
     <dependencies>
         <dependency>
@@ -15,5 +15,19 @@
             <version>3.2.1</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <defaultGoal>clean install</defaultGoal>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.2</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
