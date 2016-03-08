@@ -6,7 +6,14 @@
 
     <groupId>me.rbrickis</groupId>
     <artifactId>fakeimg-java</artifactId>
-    <version>0.0.9</version>
+    <version>0.1.0</version>
 
+    <dependencies>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-web</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+    </dependencies>
 
 </project>

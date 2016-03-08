@@ -1,4 +1,4 @@
-package me.rbrickis.fakeimg;
+package me.rbrickis.fakeimg.lib;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
