@@ -16,7 +16,7 @@ public class Application {
 
     // The entry point to the application
     public static void main(String[] args) throws Exception {
-        // Some obscure reference
+        // Some obscure reference.
         Vertx vertx = Vertx.vertx();
         HttpServer server = vertx.createHttpServer();
         Router router = Router.router(vertx);
