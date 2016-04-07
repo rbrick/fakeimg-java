@@ -8,15 +8,18 @@ import io.vertx.ext.web.Router;
 import me.rbrickis.fakeimg.lib.FakeImg;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 
 public class Application {
 
     // The entry point to the application
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+
         Vertx vertx = Vertx.vertx();
         HttpServer server = vertx.createHttpServer();
         Router router = Router.router(vertx);
@@ -38,10 +41,10 @@ public class Application {
             render(routingContext.response(), new FakeImg(text, width, height));
         });
 
-        router.route("/image/").pathRegex("/image/([0-9]{1,3})x([0-9]{1,3})/([0-9a-fA-F]{3,6})/(.*)").handler(routingContext -> {
-            int width = Integer.parseInt(routingContext.request().getParam("param0"));
-            int height = Integer.parseInt(routingContext.request().getParam("param1"));
-            String bgColor = routingContext.request().getParam("param2");
+        router.route("/image/").pathRegex("/image/([0-9a-fA-F]{3,6})/([0-9]{1,3})x([0-9]{1,3})/(.*)").handler(routingContext -> {
+            String bgColor = routingContext.request().getParam("param0");
+            int width = Integer.parseInt(routingContext.request().getParam("param1"));
+            int height = Integer.parseInt(routingContext.request().getParam("param2"));
             String text = routingContext.request().getParam("param3");
             render(routingContext.response(), new FakeImg(text, width, height, bgColor, "FFFFFF"));
         });

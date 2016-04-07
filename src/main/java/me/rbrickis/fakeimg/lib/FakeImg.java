@@ -1,7 +1,5 @@
 package me.rbrickis.fakeimg.lib;
 
-import lombok.Builder;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
